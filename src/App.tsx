@@ -1,25 +1,43 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useRef } from 'react';
+import IUserDataJson from './types/IUserDataJson';
 
 function App() {
+
+  const [userData, setUserData] = useState<any>()
+
+  const userInputRef = useRef<HTMLInputElement>(null)
+
+  async function fetchUserData(userName: string) {
+    try {
+      const response = await fetch(`https://api.github.com/users/${userName}`)
+      let data: IUserDataJson = await response.json()
+      if (response.ok) {
+        console.log(response.status)
+        console.log(data)
+        setUserData(data.avatar_url)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  function handleSubmit(event: React.FormEvent) {
+    event.preventDefault()
+    const userName = userInputRef.current?.value
+    console.log(userName)
+    if(userName) {
+      fetchUserData(userName)
+    }
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <form onSubmit={handleSubmit}>
+      <input type="text" ref={userInputRef}/>
+      <button formAction="submit">Pega</button>
+      </form>
+      <img src={userData}/>
+    </>
   );
 }
 
