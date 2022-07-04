@@ -10,11 +10,15 @@ function App() {
   async function fetchUserData(userName: string) {
     try {
       const response = await fetch(`https://api.github.com/users/${userName}`)
-      let data: IUserDataJson = await response.json()
+      const data: IUserDataJson = await response.json()
       if (response.ok) {
-        console.log(response.status)
-        console.log(data)
-        setUserData(data.avatar_url)
+        const reposResponse = await fetch(data.repos_url)
+        data.repos_list = await reposResponse.json()
+        if (reposResponse.ok) {
+          console.log(response.status)
+          console.log(data.repos_list)
+          setUserData(data.repos_list.toString())
+        }
       }
     } catch (error) {
       console.log(error)
@@ -25,7 +29,7 @@ function App() {
     event.preventDefault()
     const userName = userInputRef.current?.value
     console.log(userName)
-    if(userName) {
+    if (userName) {
       fetchUserData(userName)
     }
   }
@@ -33,10 +37,10 @@ function App() {
   return (
     <>
       <form onSubmit={handleSubmit}>
-      <input type="text" ref={userInputRef}/>
-      <button formAction="submit">Pega</button>
+        <input type="text" ref={userInputRef} />
+        <button formAction="submit">Pega</button>
       </form>
-      <img src={userData}/>
+      <p>{userData}</p>
     </>
   );
 }

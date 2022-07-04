@@ -31,6 +31,16 @@ export default interface IUserDataJson {
     followers: number,
     following: number,
     created_at: string,
-    updated_at: string
+    updated_at: string,
 
+    repos_list: IRepoInfo[]
+}
+
+export interface IRepoInfo {
+    id: number,
+    name: string,
+    html_url: string,
+    description: string,
+    language: string
+    license: string | null,
 }
