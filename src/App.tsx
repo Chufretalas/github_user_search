@@ -1,46 +1,29 @@
 import React, { useState, useRef } from 'react';
+import ResultsWrapper from './components/ResultsWrapper/ResultsWrapper';
+import SearchForm from './components/SearchForm/SearchForm';
+import fetchUserData from './http/fetchUserData';
 import IUserDataJson from './types/IUserDataJson';
 
 function App() {
 
-  const [userData, setUserData] = useState<any>()
+  const [userData, setUserData] = useState<IUserDataJson | undefined>()
 
-  const userInputRef = useRef<HTMLInputElement>(null)
+  
 
-  async function fetchUserData(userName: string) {
-    try {
-      const response = await fetch(`https://api.github.com/users/${userName}`)
-      const data: IUserDataJson = await response.json()
-      if (response.ok) {
-        const reposResponse = await fetch(data.repos_url)
-        data.repos_list = await reposResponse.json()
-        if (reposResponse.ok) {
-          console.log(response.status)
-          console.log(data.repos_list)
-          setUserData(data.repos_list.toString())
-        }
-      }
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
-  function handleSubmit(event: React.FormEvent) {
+  async function handleSubmit(event: React.FormEvent, userNameRef: React.RefObject<HTMLInputElement>) {
     event.preventDefault()
-    const userName = userInputRef.current?.value
-    console.log(userName)
-    if (userName) {
-      fetchUserData(userName)
+    if (userNameRef.current) {
+      setUserData(await fetchUserData(userNameRef.current.value))
+      setTimeout(() => {
+        if(userNameRef.current) userNameRef.current.value = ""
+      }, 10);
     }
   }
 
   return (
     <>
-      <form onSubmit={handleSubmit}>
-        <input type="text" ref={userInputRef} />
-        <button formAction="submit">Pega</button>
-      </form>
-      <p>{userData}</p>
+      <SearchForm handleSubmit={handleSubmit}/>
+      {userData && <ResultsWrapper userData={userData}/>}
     </>
   );
 }
