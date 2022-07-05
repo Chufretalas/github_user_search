@@ -1,4 +1,5 @@
 import IUserDataJson from "../../types/IUserDataJson";
+import style from "./ProfileInfo.module.scss"
 
 export default function ProfileInfo({ userData }: { userData: IUserDataJson | undefined }) {
 
@@ -6,11 +7,11 @@ export default function ProfileInfo({ userData }: { userData: IUserDataJson | un
     const { avatar_url, login, created_at, public_repos, followers, following, html_url } = userData ?? {}
 
     return (
-        <>
-            <img src={avatar_url} alt="profile image of user" />
-            <ul>
+        <div className={style.profileInfoWrapper}>
+            <img src={avatar_url} alt="profile picture of user" />
+            <ul className={style.infoText}>
                 <li>
-                    <p>Name: {login}</p>
+                    <p>Name:  {login}</p>
                 </li>
                 <li>
                     <p>On GitHub since: {created_at?.slice(0, 10).replaceAll("-", "/")}</p>
@@ -22,12 +23,12 @@ export default function ProfileInfo({ userData }: { userData: IUserDataJson | un
                     <p>Number of followers: {followers}</p>
                 </li>
                 <li>
-                    <p>Following {following} other dev(s)</p>
+                    <p>Following {following} other dev{following! > 1 && <span>(s)</span>}</p>
                 </li>
                 <li>
-                    <a href={html_url}>Visit profile</a>
+                    <a href={html_url} target="blank">Visit profile</a>
                 </li>
             </ul>
-        </>
+        </div>
     )
 }

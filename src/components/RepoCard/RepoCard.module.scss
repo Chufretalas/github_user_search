@@ -1,0 +1,30 @@
+$border-color: wheat;
+
+.cardWrapper {
+    background-color: rgb(235, 235, 253);
+    border: 6px solid $border-color;
+    border-radius: 1rem;
+    margin: 1rem;
+    padding: 0.8rem;
+    min-width: 25vw;
+    max-width: 50vw;
+
+    transition: border-color 0.8s;
+
+    &:hover {
+        border: 6px solid darken($border-color, 50%);
+    }
+
+    a {
+        ul {
+            li {
+                color: black;
+                font-size: 1.1rem;
+                margin: 0.4rem 0;
+                b {
+                    font-weight: 600;
+                }
+            }
+        }
+    }
+}

@@ -1,8 +1,9 @@
-import React, { useState, useRef } from 'react';
-import ResultsWrapper from './components/ResultsWrapper/ResultsWrapper';
-import SearchForm from './components/SearchForm/SearchForm';
-import fetchUserData from './http/fetchUserData';
-import IUserDataJson from './types/IUserDataJson';
+import React, { useState } from 'react';
+import ResultsWrapper from '../components/ResultsWrapper/ResultsWrapper';
+import SearchForm from '../components/SearchForm/SearchForm';
+import fetchUserData from '../http/fetchUserData';
+import IUserDataJson from '../types/IUserDataJson';
+import style from "./App.module.scss"
 
 function App() {
 
@@ -22,8 +23,10 @@ function App() {
 
   return (
     <>
+      <div className={style.App}>
       <SearchForm handleSubmit={handleSubmit}/>
       {userData && <ResultsWrapper userData={userData}/>}
+      </div>
     </>
   );
 }

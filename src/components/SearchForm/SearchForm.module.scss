@@ -1,0 +1,39 @@
+$btn-color: rgb(210, 210, 255);
+
+.form {
+    margin: 0.6rem 0;
+    height: 3rem;
+    display: flex;
+    padding: 0.5rem;
+    align-items: stretch;
+    justify-content: space-between;
+
+    * {
+        margin: 0  1rem;
+        border-radius: 10rem;
+        border: none;
+        
+    }
+
+    input {
+        flex-grow: 10;
+        padding-left: 1rem;
+        font-size: 1.5rem;
+    }
+
+    button {
+        flex-grow: 1;
+        background-color: $btn-color;
+        font-size: 1.2rem;
+        font-weight: bold;
+
+        &:hover {
+            background-color: darken($btn-color, 20%);
+            cursor: pointer;
+        }
+
+        &:active {
+            background-color: darken($btn-color, 10%);
+        }
+    }
+}
